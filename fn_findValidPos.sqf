@@ -12,20 +12,20 @@ private [
 
 try {
 	switch (toUpper _type) do {
-		case "COP": {
-			// Place a COP between 1-3km from FOB
-			// Add 2km buffer around COP for siblings
-			_parent_min_radius = 1000;
-			_parent_max_radius = 3000;
-			_sibling_buffer_radius = 2000;
-			_object_dist = 10;
-		};
 		case "FOB": {
 			// Place a FOB randomly
 			// Add 8km buffer around FOB for siblings
 			_parent_min_radius = 0;
 			_parent_max_radius = -1;
 			_sibling_buffer_radius = 8000;
+			_object_dist = 10;
+		};
+		case "COP": {
+			// Place a COP between 1-3km from FOB
+			// Add 2km buffer around COP for siblings
+			_parent_min_radius = 1000;
+			_parent_max_radius = 3000;
+			_sibling_buffer_radius = 2000;
 			_object_dist = 10;
 		};
 		case "PB": {
