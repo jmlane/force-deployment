@@ -1,5 +1,5 @@
 params [
-	["_orbat", [], [[[]]]]
+	["_orbat", []]
 ];
 
 if (count _orbat < 1) exitWith { "Orbat is empty" call BIS_fnc_error; };
@@ -10,45 +10,43 @@ if (count _orbat < 1) exitWith { "Orbat is empty" call BIS_fnc_error; };
  *    AOs are assigned to largest formations initially. Subordinates of the
  *    first formation should not be deployed before the sibling formations.
  */
-bft = {
+breadthFirstTraversal = {
 	params [
-		["_root", []],
-		["_code", {}]
+		["_tree", []],
+		["_nodeCode", {}]
 	];
 
-	_q = [_root];
-	diag_log format ["root, _q: %1", _q];
+	private _q = [_tree];
+
 	while {count _q > 0} do {
-		_current = _q select 0;
-		_q set [0, -1];
-		_q = _q - [-1];
-		diag_log format ["_current: %1, _q: %2", _current, _q];
+		private _current = _q deleteAt 0;
 
 		{
-			_x call _code;
+			private _enqueue = _x call _nodeCode;
 
-			if (count _x > 2) then {
-				_next = _x select 2;
-				if (count _next > 0) then {
-					_q pushBack _next;
-				};
+			if (count _enqueue > 0) then {
+				_q pushBack _enqueue;
 			};
 		} forEach _current;
 	};
 };
 
 // [[parent_index, echelon, pos], ...]
-_queue = [];
+private _queue = [];
 
 [_orbat, {
-	_echelon = _this select 0;
-	_pos = _this select 1;
-	_queue pushBack [_echelon, _pos];
-}] call bft;
+	params [
+		"_echelon",
+		"_pos",
+		["_children", []]
+	];
 
-{
-	diag_log _x select 0;
-} forEach _queue;
+	_queue pushBack [_echelon, _pos];
+
+	_children;
+}] call breadthFirstTraversal;
+
+_queue;
 
 /*
  * 2. Establish chain of command between formations
