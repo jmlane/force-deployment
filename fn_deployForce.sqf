@@ -31,17 +31,24 @@ breadthFirstTraversal = {
 	};
 };
 
-// [[parent_index, echelon, pos], ...]
+// [[echelon, pos, parentArrayRef], ...]
 private _queue = [];
 
 [_orbat, {
 	params [
 		"_echelon",
 		"_pos",
-		["_children", []]
+		["_children", []],
+		["_parent", []]
 	];
 
-	_queue pushBack [_echelon, _pos];
+	private _element = [_echelon, _pos, _parent];
+	_queue pushBack _element;
+
+	{
+		// Set index 3 explicitly for leaf (childless) nodes
+		_x set [3, _element];
+	} forEach _children;
 
 	_children;
 }] call breadthFirstTraversal;
