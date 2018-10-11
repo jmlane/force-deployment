@@ -69,50 +69,89 @@ prepareAndPlace = {
 	[_composition, _pos] call LARs_fnc_spawnComp;
 };
 
+switchOnEchelon = {
+	params [
+		"_echelon",
+		"_BNCode",
+		"_COYCode",
+		"_PLCode",
+		[
+			"_defaultCode",
+			{ format ["Unknown echelon '(%1)'", _echelon] call BIS_fnc_error; },
+			{}
+		]
+	];
+	
+	switch (toUpper _echelon) do {
+		case "BN": _BNCode;
+		case "COY": _COYCode;
+		case "PL": _PLCode;
+		default _defaultCode;
+	};
+};
+
+private _fobs = [];
+private _cops = [];
+private _pbs = [];
 {
 	_x call {
 		params [
 			"_echelon",
 			["_pos", [], [[0]], [0,2,3]],
-			["_parent", [], [[]], [0,3]]
+			["_parent", [], [[]], [0,3]],
+			["_blacklist", [], [[]]]
 		];
 
 		private [
 			"_composition",
-			"_killzoneRadius"
+			"_killzoneRadius",
+			"_blacklistRadius",
+			"_siblings"
 		];
-		switch (toUpper _echelon) do {
-			case "BN": {
+		[
+			_echelon,
+			{
 				_composition = "FOB";
 				_killzoneRadius = 50;
-				_siblingBlacklistRadius = 8000;
-			};
-			case "COY": {
+				_blacklistRadius = 8000;
+				_siblings = _fobs;
+			},
+			{
 				_composition = "COP";
 				_killzoneRadius = 40;
-				_siblingBlacklistRadius = 2000;
-			};
-			case "PL": {
+				_blacklistRadius = 2000;
+				_siblings = _cops;
+			},
+			{
 				_composition = "PB";
 				_killzoneRadius = 15;
-				_siblingBlacklistRadius = 600;
-			};
-			default {
-				format ["Unknown echelon '(%1)'", _echelon] call BIS_fnc_error;
-			};
-		};
+				_blacklistRadius = 600;
+				_siblings = _pbs;
+			}
+		] call switchOnEchelon;
 
 		if (count _pos < 2) then {
 			private _parentPos = [];
 			if (count _parent > 2) then {_parentPos = _parent select 1};
-			// TODO: Add blacklist areas
-			_pos = [_composition, _parentPos] call SimTools_ForceDeployment_fnc_findValidPos;
+
+			{
+				_blacklist pushBack [_x, _blacklistRadius];
+			} forEach _siblings;
+
+			_pos = [_composition, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
 		};
+
+		[
+			_echelon,
+			{ _fobs },
+			{ _cops },
+			{ _pbs }
+		] call switchOnEchelon pushBack _pos;
 
 		// TODO: Add naming scheme
 		private _name = str _forEachIndex;
 		[_echelon, _composition, _pos, _name, _killzoneRadius] call prepareAndPlace;
-
+		_x set [1, _pos];
 		_pos;
 	};
 } forEach _queue;
