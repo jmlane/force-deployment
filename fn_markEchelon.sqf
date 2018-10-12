@@ -9,13 +9,13 @@ private [
 
 try {
 	switch (toUpper _echelon) do {
-		case "BN": {
+		case "II": {
 			_echelon_marker_type = "group_5";
 		};
-		case "COY": {
+		case "I": {
 			_echelon_marker_type = "group_4";
 		};
-		case "PL": {
+		case "•••": {
 			_echelon_marker_type = "group_3";
 		};
 		default {

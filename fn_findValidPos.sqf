@@ -1,5 +1,5 @@
 params [
-	"_type",
+	"_composition",
 	["_parent", []],
 	["_blacklist", []]
 ];
@@ -11,7 +11,7 @@ private [
 ];
 
 try {
-	switch (toUpper _type) do {
+	switch (toUpper _composition) do {
 		case "FOB": {
 			// Place a FOB randomly
 			// Add 8km buffer around FOB for siblings
@@ -36,14 +36,12 @@ try {
 			_sibling_buffer_radius = 600;
 			_object_dist = 10;
 		};
-		default { throw format ["Unknown type (%1)", _type]; };
+		default { throw format ["Unknown type (%1)", _composition]; };
 	};
 
 	_blacklist pushBackUnique "water";
-	_pos = [_parent, _parent_min_radius, _parent_max_radius, _object_dist,
-		0, 0.1, 0, _blacklist, [[0,0], [0,0]]] call BIS_fnc_findSafePos;
 
-	_pos
+	[_parent, _parent_min_radius, _parent_max_radius, _object_dist, 0, 0.1, 0, _blacklist, [[0,0], [0,0]]] call SimTools_ForceDeployment_fnc_findSafePos;
 } catch {
 	_exception call BIS_fnc_error;
 };
