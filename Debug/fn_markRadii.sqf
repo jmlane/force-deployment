@@ -16,21 +16,21 @@ if (_name == "") then { _name = str _pos; };
 
 try {
 	switch (toUpper _echelon) do {
-		case "BN": {
+		case "II": {
 			_sibling_buffer_colour = "Default";
 			_sibling_buffer_radius = 8000;
 			_child_area_colour = "ColorRed";
 			_child_area_max_radius = 3000;
 			_child_area_min_radius = 1000;
 		};
-		case "COY": {
+		case "I": {
 			_sibling_buffer_colour = "ColorRed";
 			_sibling_buffer_radius = 2000;
 			_child_area_colour = "ColorBlue";
 			_child_area_max_radius = 2000;
 			_child_area_min_radius = 500;
 		};
-		case "PL": {
+		case "•••": {
 			_sibling_buffer_colour = "ColorBlue";
 			_sibling_buffer_radius = 600;
 			_child_area_colour = "ColorBlack";

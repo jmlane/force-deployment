@@ -83,9 +83,9 @@ switchOnEchelon = {
 	];
 	
 	switch (toUpper _echelon) do {
-		case "BN": _BNCode;
-		case "COY": _COYCode;
-		case "PL": _PLCode;
+		case "II": _BNCode;
+		case "I": _COYCode;
+		case "•••": _PLCode;
 		default _defaultCode;
 	};
 };
