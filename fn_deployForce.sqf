@@ -93,8 +93,18 @@ switchOnEchelon = {
 private _fobs = [];
 private _cops = [];
 private _pbs = [];
+private _pbBacklist = [];
 {
-	_x call {
+	private _next = [
+		_x select 0,
+		_x select 1,
+		_x select 2
+	];
+	if (_x select 0 == "•••") then {
+		_next pushBack _pbBacklist;
+		diag_log format ["••• _x %1 %2", _forEachIndex, _x];
+	};
+	_next call {
 		params [
 			"_echelon",
 			["_pos", [], [[0]], [0,2,3]],
@@ -139,6 +149,27 @@ private _pbs = [];
 			} forEach _siblings;
 
 			_pos = [_composition, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
+
+			if (count _pos < 3) then { _pos pushBack 0; };
+
+			if (toUpper _echelon == "I") then {
+				private _vector = (_pos vectorFromTo _parentPos);
+				_vector = _vector vectorMultiply 1000;
+				private _dir = (_vector select 0) atan2 (_vector select 1);
+				if (_dir < 0) then {_dir = 360 + _dir};
+				private _blacklistCenter = _pos vectorAdd _vector;
+
+				// DEBUG
+				diag_log format ["_blacklistCenter: %1", _blacklistCenter];
+				diag_log format ["dir: %1", _dir];
+				private _marker = createMarker ["MarkerPBRear_" + str _blacklistCenter, _blacklistCenter];
+				_marker setMarkerShape "RECTANGLE";
+				_marker setMarkerSize [2000, 1000];
+				_marker setMarkerDir _dir;
+
+				_pbBacklist pushBack ([_blacklistCenter, [2000, 1000, _dir, true]]);
+				//_pbBacklist pushBack _marker;
+			};
 		};
 
 		[
