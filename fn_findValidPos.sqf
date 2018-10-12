@@ -41,7 +41,7 @@ try {
 
 	_blacklist pushBackUnique "water";
 
-	[_parent, _parent_min_radius, _parent_max_radius, _object_dist, 0, 0.1, 0, _blacklist, [[0,0], [0,0]]] call BIS_fnc_findSafePos;
+	[_parent, _parent_min_radius, _parent_max_radius, _object_dist, 0, 0.1, 0, _blacklist, [[0,0], [0,0]]] call SimTools_ForceDeployment_fnc_findSafePos;
 } catch {
 	_exception call BIS_fnc_error;
 };
