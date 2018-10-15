@@ -148,9 +148,10 @@ private _pbBacklist = [];
 				_blacklist pushBack [_x, _blacklistRadius];
 			} forEach _siblings;
 
-			_pos = [_composition, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
-
-			if (count _pos < 3) then { _pos pushBack 0; };
+			private _newPos = [_composition, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
+			_pos set [0, _newPos select 0];
+			_pos set [1, _newPos select 1];
+			if (count _newPos < 3) then { _pos pushBack 0; };
 
 			if (toUpper _echelon == "I") then {
 				private _vector = (_pos vectorFromTo _parentPos);
@@ -183,10 +184,9 @@ private _pbBacklist = [];
 		private _name = str _forEachIndex;
 		[_echelon, _composition, _pos, _name, _killzoneRadius] call prepareAndPlace;
 		_x set [1, _pos];
-		_pos;
+
+		_pos
 	};
 } forEach _queue;
 
-_queue;
-
-// TODO: Pass deployed element data to persistence function
+_orbat
