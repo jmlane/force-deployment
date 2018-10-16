@@ -7,10 +7,11 @@ class SimTools_ForceDeployment
 		class deployForce {};
 		class findSafePos {};
 		class findValidPos {};
-		class markInstallation {};
 	};
 	class ForceDeployment_Debug {
 		file = "SimTools\ForceDeployment\Debug";
+		class markEchelon {};
+		class markInstallation {};
 		class markRadii {};
 	};
 };

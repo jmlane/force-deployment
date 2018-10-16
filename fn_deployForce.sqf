@@ -35,10 +35,6 @@ prepareAndPlace = {
 		"_killzoneRadius"
 	];
 
-	// Debug aids
-	[_pos, _name] call SimTools_ForceDeployment_fnc_markInstallation;
-	[_pos, _echelon, _name] call SimTools_ForceDeployment_fnc_markRadii;
-
 	// TODO: Figure out if MVP compositions are doing this in their inits/triggers
 	{ _x hideObjectGlobal true } foreach nearestTerrainObjects [_pos, [], _killzoneRadius];
 
@@ -60,7 +56,7 @@ switchOnEchelon = {
 			{}
 		]
 	];
-	
+
 	switch (toUpper _echelon) do {
 		case "II": _BNCode;
 		case "I": _COYCode;
@@ -81,7 +77,6 @@ private _pbBacklist = [];
 	];
 	if (_x select 0 == "•••") then {
 		_next pushBack _pbBacklist;
-		diag_log format ["••• _x %1 %2", _forEachIndex, _x];
 	};
 	_next call {
 		params [
@@ -139,16 +134,7 @@ private _pbBacklist = [];
 				if (_dir < 0) then {_dir = 360 + _dir};
 				private _blacklistCenter = _pos vectorAdd _vector;
 
-				// DEBUG
-				diag_log format ["_blacklistCenter: %1", _blacklistCenter];
-				diag_log format ["dir: %1", _dir];
-				private _marker = createMarker ["MarkerPBRear_" + str _blacklistCenter, _blacklistCenter];
-				_marker setMarkerShape "RECTANGLE";
-				_marker setMarkerSize [2000, 1000];
-				_marker setMarkerDir _dir;
-
 				_pbBacklist pushBack ([_blacklistCenter, [2000, 1000, _dir, true]]);
-				//_pbBacklist pushBack _marker;
 			};
 		};
 
