@@ -3,6 +3,7 @@ class SimTools_ForceDeployment
 	tag = "SimTools_ForceDeployment";
 	class ForceDeployment {
 		file = "SimTools\ForceDeployment";
+		class breadthFirstTraversal {};
 		class deployForce {};
 		class findSafePos {};
 		class findValidPos {};

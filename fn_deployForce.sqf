@@ -4,27 +4,6 @@ params [
 
 if (count _orbat < 1) exitWith { "Orbat is empty" call BIS_fnc_error; };
 
-breadthFirstTraversal = {
-	params [
-		["_tree", []],
-		["_nodeCode", {}]
-	];
-
-	private _q = [_tree];
-
-	while {count _q > 0} do {
-		private _current = _q deleteAt 0;
-
-		{
-			private _enqueue = _x call _nodeCode;
-
-			if (count _enqueue > 0) then {
-				_q pushBack _enqueue;
-			};
-		} forEach _current;
-	};
-};
-
 // [[echelon, pos, parentArrayRef], ...]
 private _queue = [];
 
@@ -45,7 +24,7 @@ private _queue = [];
 	} forEach _children;
 
 	_children;
-}] call breadthFirstTraversal;
+}] call SimTools_ForceDeployment_fnc_breadthFirstTraversal;
 
 prepareAndPlace = {
 	params [
