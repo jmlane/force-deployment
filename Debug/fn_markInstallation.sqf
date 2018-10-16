@@ -3,11 +3,11 @@ params [
 	["_name", "", [""]]
 ];
 
-if (_name == "") then { _name = format ["marker_installation_%1", _pos]; };
+if (_name == "") then { _name = format ["marker_composition_%1", _pos]; };
 
-_marker = createMarker [_name, _pos];
-_marker setMarkerShape "ICON";
-_marker setMarkerType "n_installation";
-_marker setMarkerText _name;
+_marker = createMarkerLocal [_name, _pos];
+_marker setMarkerShapeLocal "ICON";
+_marker setMarkerTypeLocal "n_unknown";
+_marker setMarkerTextLocal _name;
 
 _marker;
