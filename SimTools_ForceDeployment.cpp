@@ -10,6 +10,8 @@ class SimTools_ForceDeployment
 	};
 	class ForceDeployment_Debug {
 		file = "SimTools\ForceDeployment\Debug";
+		class createMarkers {};
+		class deleteMarkers {};
 		class markEchelon {};
 		class markInstallation {};
 		class markRadii {};
