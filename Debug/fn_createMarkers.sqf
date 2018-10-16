@@ -17,7 +17,7 @@ SIMTOOLS_FORCEDEPLOYMENT_DEBUG_MARKERS = [];
 
 	private _name = format ["%1-%2-%3", player, _echelon, _pos];
 	SIMTOOLS_FORCEDEPLOYMENT_DEBUG_MARKERS pushBack (
-		[_pos, _name] call SimTools_ForceDeployment_fnc_markInstallation);
+		[_pos, _name] call SimTools_ForceDeployment_fnc_markComposition);
 	SIMTOOLS_FORCEDEPLOYMENT_DEBUG_MARKERS append (
 		[_pos, _echelon, _name] call SimTools_ForceDeployment_fnc_markRadii);
 
