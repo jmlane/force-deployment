@@ -57,10 +57,10 @@ switchOnEchelon = {
 		]
 	];
 
-	switch (toUpper _echelon) do {
-		case "II": _BNCode;
-		case "I": _COYCode;
-		case "•••": _PLCode;
+	switch (_echelon) do {
+		case "Battalion": _BNCode;
+		case "Company": _COYCode;
+		case "Platoon": _PLCode;
 		default _defaultCode;
 	};
 };
@@ -75,7 +75,7 @@ private _pbBacklist = [];
 		_x select 1,
 		_x select 2
 	];
-	if (_x select 0 == "•••") then {
+	if (_x select 0 == "Platoon") then {
 		_next pushBack _pbBacklist;
 	};
 	_next call {
@@ -127,7 +127,7 @@ private _pbBacklist = [];
 			_pos set [1, _newPos select 1];
 			if (count _newPos < 3) then { _pos pushBack 0; };
 
-			if (toUpper _echelon == "I") then {
+			if (_echelon == "Company") then {
 				private _vector = (_pos vectorFromTo _parentPos);
 				_vector = _vector vectorMultiply 1000;
 				private _dir = (_vector select 0) atan2 (_vector select 1);
