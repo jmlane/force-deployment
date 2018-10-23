@@ -8,14 +8,14 @@ private [
 ];
 
 try {
-	switch (toUpper _echelon) do {
-		case "II": {
+	switch (_echelon) do {
+		case "Battalion": {
 			_echelon_marker_type = "group_5";
 		};
-		case "I": {
+		case "Company": {
 			_echelon_marker_type = "group_4";
 		};
-		case "•••": {
+		case "Platoon": {
 			_echelon_marker_type = "group_3";
 		};
 		default {

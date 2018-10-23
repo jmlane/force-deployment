@@ -57,10 +57,10 @@ switchOnEchelon = {
 		]
 	];
 
-	switch (toUpper _echelon) do {
-		case "II": _BNCode;
-		case "I": _COYCode;
-		case "•••": _PLCode;
+	switch (_echelon) do {
+		case "Battalion": _BNCode;
+		case "Company": _COYCode;
+		case "Platoon": _PLCode;
 		default _defaultCode;
 	};
 };
@@ -75,7 +75,7 @@ private _pbBacklist = [];
 		_x select 1,
 		_x select 2
 	];
-	if (_x select 0 == "•••") then {
+	if (_x select 0 == "Platoon") then {
 		_next pushBack _pbBacklist;
 	};
 	_next call {
