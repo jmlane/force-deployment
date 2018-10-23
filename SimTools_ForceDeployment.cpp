@@ -7,6 +7,7 @@ class SimTools_ForceDeployment
 		class deployForce {};
 		class findSafePos {};
 		class findValidPos {};
+		class Formation {};
 		class parseCfgOrbat {};
 	};
 	class ForceDeployment_Debug {
