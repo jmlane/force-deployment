@@ -127,7 +127,7 @@ private _pbBacklist = [];
 			_pos set [1, _newPos select 1];
 			if (count _newPos < 3) then { _pos pushBack 0; };
 
-			if (toUpper _echelon == "I") then {
+			if (_echelon == "Company") then {
 				private _vector = (_pos vectorFromTo _parentPos);
 				_vector = _vector vectorMultiply 1000;
 				private _dir = (_vector select 0) atan2 (_vector select 1);
