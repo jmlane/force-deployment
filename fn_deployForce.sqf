@@ -2,9 +2,8 @@ params [
 	["_orbat", []]
 ];
 
-if (count _orbat < 1) exitWith { "Orbat is empty" call BIS_fnc_error; };
+if (count _orbat < 1) exitWith {["Orbat is empty"] call BIS_fnc_error};
 
-// [[echelon, pos, parentArrayRef], ...]
 private _queue = [];
 
 [_orbat, {
@@ -21,7 +20,7 @@ private _queue = [];
 	_children apply {_x set [4, _element]; _x}
 }] call SimTools_ForceDeployment_fnc_breadthFirstTraversal;
 
-switchOnEchelon = {
+_fnc_switchOnEchelon = {
 	params [
 		"_echelon",
 		"_BNCode",
@@ -87,7 +86,7 @@ private _pbBacklist = [];
 				_blacklistRadius = 600;
 				_siblings = _pbs;
 			}
-		] call switchOnEchelon;
+		] call _fnc_switchOnEchelon;
 
 		if (count _pos < 2) then {
 			private _parentPos = [];
@@ -100,7 +99,7 @@ private _pbBacklist = [];
 			private _newPos = [_echelon, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
 			_pos set [0, _newPos select 0];
 			_pos set [1, _newPos select 1];
-			if (count _newPos < 3) then { _pos pushBack 0; };
+			if (count _newPos < 3) then {_pos pushBack 0};
 
 			if (_echelon == "Company") then {
 				private _vector = (_pos vectorFromTo _parentPos);
@@ -118,7 +117,7 @@ private _pbBacklist = [];
 			{ _fobs },
 			{ _cops },
 			{ _pbs }
-		] call switchOnEchelon pushBack _pos;
+		] call _fnc_switchOnEchelon pushBack _pos;
 
 		[_pos, _killzoneRadius] call compileFinal _deployment;
 		_x set [1, _pos];
