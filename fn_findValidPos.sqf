@@ -1,5 +1,5 @@
 params [
-	"_composition",
+	"_echelon",
 	["_parent", []],
 	["_blacklist", []]
 ];
@@ -11,8 +11,8 @@ private [
 ];
 
 try {
-	switch (toUpper _composition) do {
-		case "FOB": {
+	switch (_echelon) do {
+		case "Battalion": {
 			// Place a FOB randomly
 			// Add 8km buffer around FOB for siblings
 			_parent_min_radius = 0;
@@ -20,7 +20,7 @@ try {
 			_sibling_buffer_radius = 8000;
 			_object_dist = 10;
 		};
-		case "COP": {
+		case "Company": {
 			// Place a COP between 1-3km from FOB
 			// Add 2km buffer around COP for siblings
 			_parent_min_radius = 1000;
@@ -28,7 +28,7 @@ try {
 			_sibling_buffer_radius = 2000;
 			_object_dist = 10;
 		};
-		case "PB": {
+		case "Platoon": {
 			// Place a PB between 500-2km from COP
 			// Add 600m buffer around PB for siblings
 			_parent_min_radius = 500;

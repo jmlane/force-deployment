@@ -1,6 +1,7 @@
 params [
 	["_size", "", [""]],
 	["_position", [], [[0]]],
+	["_deployment", "", [""]],
 	["_subordinates", [], [[]]]
 ];
 
@@ -8,6 +9,7 @@ private _fnc_typeCheck = {
 	params [
 		["_size", "", [""]],
 		["_position", [], [[0]]],
+		["_deployment", "", [""]],
 		["_subordinates", [], [[]]]
 	];
 
@@ -22,6 +24,11 @@ private _fnc_typeCheck = {
 		false
 	};
 
+	if ("_deployment" == "") exitWith {
+		["'%1' is not a valid deployment value, at %2", _this select 2, _this] call BIS_fnc_error;
+		false
+	};
+
 	if ((_subordinates apply {_x call _fnc_typeCheck}) findIf {!_x} > 1) exitWith {
 		false
 	};
@@ -31,4 +38,4 @@ private _fnc_typeCheck = {
 
 if (!(_this call _fnc_typeCheck)) exitWith { nil };
 
-[_size, _position, _subordinates]
+[_size, _position, _deployment, _subordinates]

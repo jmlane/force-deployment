@@ -11,38 +11,15 @@ private _queue = [];
 	params [
 		"_echelon",
 		"_pos",
+		"_deployment",
 		["_children", []],
 		["_parent", []]
 	];
 
-	private _element = [_echelon, _pos, _parent];
+	private _element = [_echelon, _pos, _deployment, _parent];
 	_queue pushBack _element;
-
-	{
-		// Set index 3 explicitly for leaf (childless) nodes
-		_x set [3, _element];
-	} forEach _children;
-
-	_children;
+	_children apply {_x set [4, _element]; _x}
 }] call SimTools_ForceDeployment_fnc_breadthFirstTraversal;
-
-prepareAndPlace = {
-	params [
-		"_echelon",
-		"_composition",
-		"_pos",
-		"_name",
-		"_killzoneRadius"
-	];
-
-	// TODO: Figure out if MVP compositions are doing this in their inits/triggers
-	{ _x hideObjectGlobal true } foreach nearestTerrainObjects [_pos, [], _killzoneRadius];
-
-	// LARs_fnc_spawnComp expects 3D ATL pos, everything else can handle 2D.
-	if (count _pos == 2) then { _pos pushBack 0; };
-
-	[_composition, _pos] call LARs_fnc_spawnComp;
-};
 
 switchOnEchelon = {
 	params [
@@ -73,7 +50,8 @@ private _pbBacklist = [];
 	private _next = [
 		_x select 0,
 		_x select 1,
-		_x select 2
+		_x select 2,
+		_x select 3
 	];
 	if (_x select 0 == "Platoon") then {
 		_next pushBack _pbBacklist;
@@ -82,12 +60,12 @@ private _pbBacklist = [];
 		params [
 			"_echelon",
 			["_pos", [], [[0]], [0,2,3]],
-			["_parent", [], [[]], [0,3]],
+			["_deployment", "", [""]],
+			["_parent", [], [[]]],
 			["_blacklist", [], [[]]]
 		];
 
 		private [
-			"_composition",
 			"_killzoneRadius",
 			"_blacklistRadius",
 			"_siblings"
@@ -95,19 +73,16 @@ private _pbBacklist = [];
 		[
 			_echelon,
 			{
-				_composition = "FOB";
 				_killzoneRadius = 50;
 				_blacklistRadius = 8000;
 				_siblings = _fobs;
 			},
 			{
-				_composition = "COP";
 				_killzoneRadius = 40;
 				_blacklistRadius = 2000;
 				_siblings = _cops;
 			},
 			{
-				_composition = "PB";
 				_killzoneRadius = 15;
 				_blacklistRadius = 600;
 				_siblings = _pbs;
@@ -122,7 +97,7 @@ private _pbBacklist = [];
 				_blacklist pushBack [_x, _blacklistRadius];
 			} forEach _siblings;
 
-			private _newPos = [_composition, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
+			private _newPos = [_echelon, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
 			_pos set [0, _newPos select 0];
 			_pos set [1, _newPos select 1];
 			if (count _newPos < 3) then { _pos pushBack 0; };
@@ -145,9 +120,7 @@ private _pbBacklist = [];
 			{ _pbs }
 		] call switchOnEchelon pushBack _pos;
 
-		// TODO: Add naming scheme
-		private _name = str _forEachIndex;
-		[_echelon, _composition, _pos, _name, _killzoneRadius] call prepareAndPlace;
+		[_pos, _killzoneRadius] call compileFinal _deployment;
 		_x set [1, _pos];
 
 		_pos
