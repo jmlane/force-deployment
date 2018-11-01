@@ -40,10 +40,8 @@ private _pbBacklist = [];
 		["_blacklist", [], [[]]]
 	];
 
-	private _element = [_echelon, _pos, _deployment, _parent];
-
 	if (_echelon == "Platoon") then {
-		_element pushBack _pbBacklist;
+		_blacklist = _blacklist + _pbBacklist;
 	};
 
 	private [
@@ -71,12 +69,9 @@ private _pbBacklist = [];
 	] call _fnc_switchOnEchelon;
 
 	if (count _pos < 2) then {
-		private _parentPos = [];
-		if (count _parent > 2) then {_parentPos = _parent select 1};
+		private _parentPos = if (count _parent >= 2) then {_parent select 1} else {[]};
 
-		{
-			_blacklist pushBack [_x, _blacklistRadius];
-		} forEach _siblings;
+		_siblings apply {_blacklist pushBack [_x, _blacklistRadius]};
 
 		private _newPos = [_echelon, _parentPos, _blacklist] call SimTools_ForceDeployment_fnc_findValidPos;
 		_pos set [0, _newPos select 0];
@@ -103,7 +98,7 @@ private _pbBacklist = [];
 
 	[_pos, _killzoneRadius] call compileFinal _deployment;
 
-	_children apply {_x set [4, _element]; _x}
+	_children apply {_x set [4, [_echelon, _pos]]; _x}
 }] call SimTools_ForceDeployment_fnc_breadthFirstTraversal;
 
 _orbat

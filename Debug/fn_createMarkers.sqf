@@ -11,8 +11,9 @@ SIMTOOLS_FORCEDEPLOYMENT_DEBUG_MARKERS = [];
 [_orbat, {
 	params [
 		"_echelon",
-		"_pos",
-		"_children"
+		["_pos", [], [[0]], [0,2,3]],
+		["_deployment", "", [""]],
+		["_children", []]
 	];
 
 	private _name = format ["%1-%2-%3", player, _echelon, _pos];
