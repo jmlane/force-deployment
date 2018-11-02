@@ -96,7 +96,7 @@ private _pbBacklist = [];
 		{ _pbs }
 	] call _fnc_switchOnEchelon pushBack _pos;
 
-	[_pos, _killzoneRadius] call compileFinal _deployment;
+	[_echelon, _pos, _killzoneRadius] call compileFinal _deployment;
 
 	_children apply {_x set [4, [_echelon, _pos]]; _x}
 }] call SimTools_ForceDeployment_fnc_breadthFirstTraversal;
